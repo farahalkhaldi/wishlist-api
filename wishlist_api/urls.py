@@ -19,6 +19,10 @@ from items import views
 from django.conf import settings
 from django.conf.urls.static import static
 
+from api import views as viewsb
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
 
@@ -26,11 +30,18 @@ urlpatterns = [
     path('items/detail/<int:item_id>/', views.item_detail, name='item-detail'),
     path('items/wishlist/', views.wishlist, name='wishlist' ),
 
+
+    path('api/items/list/', viewsb.ItemListView.as_view(), name='itemapi-list'),
+    path('api/items/detail/<int:item_id>/', viewsb.ItemDetailView.as_view(), name='itemapi-detail'),
+
     path('user/register/', views.user_register, name='user-register'),
     path('user/login/', views.user_login, name='user-login'),
+    path('login/', TokenObtainPairView.as_view(), name='login'),
     path('user/logout/', views.user_logout, name='user-logout'),
 
     path('items/<int:item_id>/favorite/', views.item_favorite, name='item-favorite'),
+
+
 ]
 
 urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
